@@ -28,7 +28,7 @@ export default function TeacherList() {
 			width: 200,
 			renderCell: (params) => {
 				return (
-					<div className="productListItem">
+					<div className="teacherListItem">
 						<img className="teacherListImg" src={params.row.img} alt="" />
 						{params.row.firstName} {params.row.lastName}
 					</div>
