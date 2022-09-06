@@ -11,8 +11,8 @@ import {
 import UserList from "./pages/userList/UserList";
 import User from "./pages/user/User";
 import NewUser from "./pages/newUser/NewUser";
-import ProductList from "./pages/productList/ProductList";
-import Product from "./pages/product/Product";
+import TeacherList from "./pages/teacherList/TeacherList";
+import Product from "./pages/teacher/Product";
 import NewProduct from "./pages/newProduct/NewProduct";
 import Login from "./pages/login/Login";
 
@@ -42,8 +42,8 @@ function App() {
 							<Route path="/newUser">
 								<NewUser />
 							</Route>
-							<Route path="/products">
-								<ProductList />
+							<Route path="/teachers">
+								<TeacherList />
 							</Route>
 							<Route path="/product/:productId">
 								<Product />
