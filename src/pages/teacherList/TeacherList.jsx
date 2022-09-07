@@ -1,14 +1,12 @@
 import "./teacherList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { productRows } from "../../dummyData";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getTeachers } from "../../redux/apiCalls";
+import { deleteTeacher, getTeachers } from "../../redux/apiCalls";
 
 export default function TeacherList() {
-	const [data, setData] = useState(productRows);
 	const dispatch = useDispatch();
 	const teachers = useSelector((state) => state.teacher.teachers);
 
@@ -17,7 +15,7 @@ export default function TeacherList() {
 	}, [dispatch]);
 
 	const handleDelete = (id) => {
-		setData(data.filter((item) => item.id !== id));
+		deleteTeacher(id, dispatch);
 	};
 
 	const columns = [
@@ -54,12 +52,12 @@ export default function TeacherList() {
 			renderCell: (params) => {
 				return (
 					<>
-						<Link to={"/teachers/" + params.row.id}>
+						<Link to={"/teacher/" + params.row._id}>
 							<button className="teacherListEdit">Edit</button>
 						</Link>
 						<DeleteOutline
 							className="teacherListDelete"
-							onClick={() => handleDelete(params.row.id)}
+							onClick={() => handleDelete(params.row._id)}
 						/>
 					</>
 				);

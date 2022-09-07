@@ -21,6 +21,7 @@ export const teacherSlice = createSlice({
 			state.isFetching = false;
 			state.error = true;
 		},
+
 		//DELETE
 		deleteTeacherStart: (state) => {
 			state.isFetching = true;
@@ -29,7 +30,7 @@ export const teacherSlice = createSlice({
 		deleteTeacherSuccess: (state, action) => {
 			state.isFetching = false;
 			state.teachers.splice(
-				state.teachers.findIndex((item) => item._id === action.payload),
+				state.teachers.findIndex((item) => item._id === action.payload.id),
 				1
 			);
 		},
@@ -37,6 +38,7 @@ export const teacherSlice = createSlice({
 			state.isFetching = false;
 			state.error = true;
 		},
+
 		//UPDATE
 		updateTeacherStart: (state) => {
 			state.isFetching = true;
@@ -46,13 +48,14 @@ export const teacherSlice = createSlice({
 			state.isFetching = false;
 			state.teachers[
 				state.teachers.findIndex((item) => item._id === action.payload.id)
-			] = action.payload.product;
+			] = action.payload.teacher;
 		},
 		updateTeacherFailure: (state) => {
 			state.isFetching = false;
 			state.error = true;
 		},
-		//UPDATE
+
+		//Create
 		addTeacherStart: (state) => {
 			state.isFetching = true;
 			state.error = false;

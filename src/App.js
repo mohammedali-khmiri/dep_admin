@@ -12,8 +12,8 @@ import UserList from "./pages/userList/UserList";
 import User from "./pages/user/User";
 import NewUser from "./pages/newUser/NewUser";
 import TeacherList from "./pages/teacherList/TeacherList";
-import Product from "./pages/teacher/Product";
-import NewProduct from "./pages/newProduct/NewProduct";
+import Teacher from "./pages/teacher/Teacher";
+import NewTeacher from "./pages/newTeacher/NewTeacher";
 import Login from "./pages/login/Login";
 
 function App() {
@@ -45,11 +45,11 @@ function App() {
 							<Route path="/teachers">
 								<TeacherList />
 							</Route>
-							<Route path="/product/:productId">
-								<Product />
+							<Route path="/teacher/:teacherId">
+								<Teacher />
 							</Route>
-							<Route path="/newproduct">
-								<NewProduct />
+							<Route path="/newteacher">
+								<NewTeacher />
 							</Route>
 						</div>
 					</>
