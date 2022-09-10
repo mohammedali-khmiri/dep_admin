@@ -1,17 +1,79 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import "./teacher.css";
-import Chart from "../../components/chart/Chart";
-import { productData } from "../../dummyData";
 import { Publish } from "@material-ui/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import {
+	getStorage,
+	ref,
+	uploadBytesResumable,
+	getDownloadURL,
+} from "firebase/storage";
+import app from "../../firebase";
+import { updateTeacher } from "../../redux/apiCalls";
 
 export default function Teacher() {
+	const [inputs, setInputs] = useState({});
+	const [file, setFile] = useState(null);
+	const dispatch = useDispatch();
 	const location = useLocation();
+	const history = useHistory();
 	const teacherId = location.pathname.split("/")[2];
 
 	const teacher = useSelector((state) =>
 		state.teacher.teachers.find((teacher) => teacher._id === teacherId)
 	);
+
+	const handleChange = (e) => {
+		setInputs((prev) => {
+			return { ...prev, [e.target.name]: e.target.value };
+		});
+	};
+
+	const handleClick = (e) => {
+		e.preventDefault();
+		const fileName = new Date().getTime() + file.name;
+		const storage = getStorage(app);
+		const storageRef = ref(storage, fileName);
+		const uploadTask = uploadBytesResumable(storageRef, file);
+
+		// Register three observers:
+		// 1. 'state_changed' observer, called any time the state changes
+		// 2. Error observer, called on failure
+		// 3. Completion observer, called on successful completion
+		uploadTask.on(
+			"state_changed",
+			(snapshot) => {
+				// Observe state change events such as progress, pause, and resume
+				// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+				const progress =
+					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+				console.log("Upload is " + progress + "% done");
+				switch (snapshot.state) {
+					case "paused":
+						console.log("Upload is paused");
+						break;
+					case "running":
+						console.log("Upload is running");
+						break;
+					default:
+				}
+			},
+			(error) => {
+				// Handle unsuccessful uploads
+			},
+			() => {
+				// Handle successful uploads on complete
+				// For instance, get the download URL: https://firebasestorage.googleapis.com/...
+				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+					const teacher = { ...inputs, img: downloadURL };
+					const id = teacherId;
+					updateTeacher(id, teacher, dispatch);
+					history.goBack();
+				});
+			}
+		);
+	};
 	return (
 		<div className="product">
 			<div className="productTitleContainer">
@@ -61,16 +123,50 @@ export default function Teacher() {
 			<div className="productBottom">
 				<form className="productForm">
 					<div className="productFormLeft">
+						<input
+							name="id"
+							type="text"
+							onChange={handleChange}
+							value={teacher._id}
+							hidden
+						/>
 						<label>Nom d'Enseignant</label>
-						<input type="text" placeholder={teacher.firstName} />
-						<label>Prenon d'Enseignant</label>
-						<input type="text" placeholder={teacher.lastName} />
+						<input
+							name="firstName"
+							type="text"
+							value={teacher.firstName}
+							onChange={handleChange}
+						/>
+						<label>Prenom d'Enseignant</label>
+						<input
+							name="lastName"
+							type="text"
+							value={teacher.lastName}
+							onChange={handleChange}
+						/>
 						<label>Email</label>
-						<input type="text" placeholder={teacher.email} />
+						<input
+							name="email"
+							type="text"
+							value={teacher.email}
+							onChange={handleChange}
+						/>
+						<label>Address</label>
+						<input
+							name="address"
+							type="text"
+							value={teacher.address}
+							onChange={handleChange}
+						/>
 						<label>Telephone</label>
-						<input type="text" placeholder={teacher.phone} />
+						<input
+							name="phone"
+							type="number"
+							value={teacher.phone}
+							onChange={handleChange}
+						/>
 						<label>Specialité</label>
-						<select name="specialty" id="specialty">
+						<select name="specialty" id="specialty" onChange={handleChange}>
 							<option value="" disabled selected>
 								{teacher.specialty}
 							</option>
@@ -81,7 +177,7 @@ export default function Teacher() {
 							<option value="mobile">Mobile</option>
 						</select>
 						<label>Grade</label>
-						<select name="grade" id="grade">
+						<select name="grade" id="grade" onChange={handleChange}>
 							<option value="" disabled selected>
 								{teacher.grade}
 							</option>
@@ -95,11 +191,18 @@ export default function Teacher() {
 						<div className="productUpload">
 							<img src={teacher.img} alt="" className="productUploadImg" />
 							<label for="file">
-								<Publish />
+								<Publish style={{ cursor: "pointer" }} />
 							</label>
-							<input type="file" id="file" style={{ display: "none" }} />
+							<input
+								type="file"
+								id="file"
+								style={{ display: "none" }}
+								onChange={(e) => setFile(e.target.files[0])}
+							/>
 						</div>
-						<button className="productButton">Update</button>
+						<button onClick={handleClick} className="productButton">
+							Update
+						</button>
 					</div>
 				</form>
 			</div>

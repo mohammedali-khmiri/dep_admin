@@ -50,8 +50,8 @@ export const deleteTeacher = async (id, dispatch) => {
 export const updateTeacher = async (id, teacher, dispatch) => {
 	dispatch(updateTeacherStart());
 	try {
-		// update
-		dispatch(updateTeacherSuccess(id, teacher));
+		const res = await userRequest.put(`/teachers/${id}`, teacher);
+		dispatch(updateTeacherSuccess(res.data));
 	} catch (err) {
 		dispatch(updateTeacherFailure());
 	}

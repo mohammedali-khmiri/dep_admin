@@ -9,11 +9,13 @@ import {
 import app from "../../firebase";
 import { addTeacher } from "../../redux/apiCalls";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 export default function NewTeacher() {
 	const [inputs, setInputs] = useState({});
 	const [file, setFile] = useState(null);
 	const dispatch = useDispatch();
+	const history = useHistory();
 
 	const handleChange = (e) => {
 		setInputs((prev) => {
@@ -59,6 +61,7 @@ export default function NewTeacher() {
 				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
 					const teacher = { ...inputs, img: downloadURL };
 					addTeacher(teacher, dispatch);
+					history.goBack();
 				});
 			}
 		);
