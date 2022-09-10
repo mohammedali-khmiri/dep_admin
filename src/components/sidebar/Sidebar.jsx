@@ -9,8 +9,8 @@ import {
 	ChatBubbleOutline,
 	WorkOutline,
 	Report,
-  AssignmentOutlined,
-  AssignmentIndOutlined,
+	AssignmentOutlined,
+	AssignmentIndOutlined,
 } from "@material-ui/icons";
 
 import { Link } from "react-router-dom";
@@ -32,16 +32,15 @@ export default function Sidebar() {
 							<Timeline className="sidebarIcon" />
 							Analytics
 						</li>
-						
 					</ul>
 				</div>
 				<div className="sidebarMenu">
 					<h3 className="sidebarTitle">Quick Menu</h3>
 					<ul className="sidebarList">
-						<Link to="/users" className="link">
+						<Link to="/students" className="link">
 							<li className="sidebarListItem">
 								<PermIdentity className="sidebarIcon" />
-								Users
+								Students
 							</li>
 						</Link>
 						<Link to="/teachers" className="link">
@@ -50,10 +49,12 @@ export default function Sidebar() {
 								Teachers
 							</li>
 						</Link>
-						<li className="sidebarListItem">
-							<AssignmentOutlined className="sidebarIcon" />
-							Notes
-						</li>
+						<Link to="/notes" className="link">
+							<li className="sidebarListItem">
+								<AssignmentOutlined className="sidebarIcon" />
+								Notes
+							</li>
+						</Link>
 						<li className="sidebarListItem">
 							<BarChart className="sidebarIcon" />
 							Reports

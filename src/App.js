@@ -15,6 +15,12 @@ import TeacherList from "./pages/teacherList/TeacherList";
 import Teacher from "./pages/teacher/Teacher";
 import NewTeacher from "./pages/newTeacher/NewTeacher";
 import Login from "./pages/login/Login";
+import StudentList from "./pages/studentList/StudentList";
+import Student from "./pages/student/Student";
+import NewStudent from "./pages/newStudent/NewStudent";
+import NoteList from "./pages/noteList/NoteList";
+import Note from "./pages/note/Note";
+import NewNote from "./pages/newNote/NewNote";
 
 function App() {
 	const admin = JSON.parse(
@@ -50,6 +56,25 @@ function App() {
 							</Route>
 							<Route path="/newteacher">
 								<NewTeacher />
+							</Route>
+							<Route path="/students">
+								<StudentList />
+							</Route>
+							<Route path="/student/:studentId">
+								<Student />
+							</Route>
+
+							<Route path="/newstudent">
+								<NewStudent />
+							</Route>
+							<Route path="/notes">
+								<NoteList />
+							</Route>
+							<Route path="/note/:noteId">
+								<Note />
+							</Route>
+							<Route path="/newnote">
+								<NewNote />
 							</Route>
 						</div>
 					</>

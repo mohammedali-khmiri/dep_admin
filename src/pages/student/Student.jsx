@@ -1,5 +1,5 @@
 import { Link, useHistory, useLocation } from "react-router-dom";
-import "./teacher.css";
+import "./student.css";
 import { Publish } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
@@ -10,18 +10,18 @@ import {
 	getDownloadURL,
 } from "firebase/storage";
 import app from "../../firebase";
-import { updateTeacher } from "../../redux/apiCalls";
+import { updateStudent } from "../../redux/apiCalls";
 
-export default function Teacher() {
+export default function Student() {
 	const [inputs, setInputs] = useState({});
 	const [file, setFile] = useState(null);
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const history = useHistory();
-	const teacherId = location.pathname.split("/")[2];
+	const studentId = location.pathname.split("/")[2];
 
-	const teacher = useSelector((state) =>
-		state.teacher.teachers.find((teacher) => teacher._id === teacherId)
+	const student = useSelector((state) =>
+		state.student.students.find((student) => student._id === studentId)
 	);
 
 	const handleChange = (e) => {
@@ -66,9 +66,9 @@ export default function Teacher() {
 				// Handle successful uploads on complete
 				// For instance, get the download URL: https://firebasestorage.googleapis.com/...
 				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					const teacher = { ...inputs, img: downloadURL };
-					const id = teacherId;
-					updateTeacher(id, teacher, dispatch);
+					const student = { ...inputs, img: downloadURL };
+					const id = studentId;
+					updateStudent(id, student, dispatch);
 					history.goBack();
 				});
 			}
@@ -77,45 +77,45 @@ export default function Teacher() {
 	return (
 		<div className="product">
 			<div className="productTitleContainer">
-				<h1 className="productTitle">Teacher</h1>
-				<Link to="/newteacher">
+				<h1 className="productTitle">Student</h1>
+				<Link to="/newstudent">
 					<button className="productAddButton">Create</button>
 				</Link>
 			</div>
 			<div className="productTop">
 				<div className="productTopLeft">
-					<img src={teacher.img} alt="" className="productInfoImg" />
+					<img src={student.img} alt="" className="productInfoImg" />
 				</div>
 				<div className="productTopRight">
 					<div className="productInfoTop">
 						<span className="productName">
-							{teacher.firstName} {teacher.lastName}
+							{student.firstName} {student.lastName}
 						</span>
 					</div>
 					<div className="productInfoBottom">
 						<div className="productInfoItem">
 							<span className="productInfoKey">id:</span>
-							<span className="productInfoValue">{teacher._id}</span>
+							<span className="productInfoValue">{student._id}</span>
 						</div>
 						<div className="productInfoItem">
-							<span className="productInfoKey">specialité:</span>
-							<span className="productInfoValue">{teacher.specialty}</span>
+							<span className="productInfoKey">N°Inscription:</span>
+							<span className="productInfoValue">{student.nInscription}</span>
 						</div>
 						<div className="productInfoItem">
-							<span className="productInfoKey">grade:</span>
-							<span className="productInfoValue">{teacher.grade}</span>
+							<span className="productInfoKey">N°CIN:</span>
+							<span className="productInfoValue">{student.nCin}</span>
 						</div>
 						<div className="productInfoItem">
 							<span className="productInfoKey">email:</span>
-							<span className="productInfoValue">{teacher.email}</span>
+							<span className="productInfoValue">{student.email}</span>
 						</div>
 						<div className="productInfoItem">
 							<span className="productInfoKey">adress:</span>
-							<span className="productInfoValue">{teacher.address}</span>
+							<span className="productInfoValue">{student.address}</span>
 						</div>
 						<div className="productInfoItem">
 							<span className="productInfoKey">tel:</span>
-							<span className="productInfoValue">{teacher.phone}</span>
+							<span className="productInfoValue">{student.phone}</span>
 						</div>
 					</div>
 				</div>
@@ -127,69 +127,57 @@ export default function Teacher() {
 							name="id"
 							type="text"
 							onChange={handleChange}
-							value={teacher._id}
+							value={student._id}
 							hidden
 						/>
-						<label>Nom d'Enseignant</label>
+						<label>Nom d'Etudiant</label>
 						<input
 							name="firstName"
 							type="text"
-							placeholder={teacher.firstName}
+							placeholder={student.firstName}
 							onChange={handleChange}
 						/>
-						<label>Prenom d'Enseignant</label>
+						<label>Prenom d'Etudiant</label>
 						<input
 							name="lastName"
 							type="text"
-							placeholder={teacher.lastName}
+							placeholder={student.lastName}
 							onChange={handleChange}
 						/>
 						<label>Email</label>
 						<input
 							name="email"
 							type="text"
-							placeholder={teacher.email}
+							placeholder={student.email}
 							onChange={handleChange}
 						/>
 						<label>Address</label>
 						<input
 							name="address"
 							type="text"
-							placeholder={teacher.address}
+							placeholder={student.address}
 							onChange={handleChange}
 						/>
 						<label>Telephone</label>
 						<input
 							name="phone"
 							type="number"
-							placeholder={teacher.phone}
+							placeholder={student.phone}
 							onChange={handleChange}
 						/>
-						<label>Specialité</label>
-						<select name="specialty" id="specialty" onChange={handleChange}>
+						<label>Classe</label>
+						<select name="class" id="class" onChange={handleChange}>
 							<option value="" disabled selected>
-								{teacher.specialty}
+								{student.class}
 							</option>
-							<option value="big data">Big Data</option>
-							<option value="soap">Soap</option>
-							<option value="reseau">Réseau</option>
-							<option value="developpement">Développement</option>
-							<option value="mobile">Mobile</option>
-						</select>
-						<label>Grade</label>
-						<select name="grade" id="grade" onChange={handleChange}>
-							<option value="" disabled selected>
-								{teacher.grade}
-							</option>
-							<option value="chef departement">Chef Departement</option>
-							<option value="professeur">Professeur</option>
-							<option value="assistant">Assistant</option>
-							<option value="maitre assistant"> Maitre Assistant</option>
+							<option value="dsi">DSI</option>
+							<option value="rsi">RSI</option>
+							<option value="sem">SEM</option>
 						</select>
 					</div>
 					<div className="productFormRight">
 						<div className="productUpload">
-							<img src={teacher.img} alt="" className="productUploadImg" />
+							<img src={student.img} alt="" className="productUploadImg" />
 							<label for="file">
 								<Publish style={{ cursor: "pointer" }} />
 							</label>
