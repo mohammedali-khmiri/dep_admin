@@ -21,7 +21,7 @@ export default function WidgetLg() {
 	};
 	return (
 		<div className="widgetLg">
-			<h3 className="widgetLgTitle">Latest transactions</h3>
+			<h3 className="widgetLgTitle">Latest Notes</h3>
 			<table className="widgetLgTable">
 				<tr className="widgetLgTr">
 					<th className="widgetLgTh">Etudiant</th>
@@ -32,7 +32,9 @@ export default function WidgetLg() {
 				{notes.map((note) => (
 					<tr className="widgetLgTr" key={note._id}>
 						<td className="widgetLgUser">
-							<span className="widgetLgName">{note.nameStud}</span>
+							<span className="widgetLgName">
+								{note.fnameStud} {note.lnameStud}
+							</span>
 						</td>
 						<td className="widgetLgDate">{format(note.dateSou)}</td>
 						<td className="widgetLgAmount">{note.note}</td>

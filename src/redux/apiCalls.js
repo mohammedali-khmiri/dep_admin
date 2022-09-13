@@ -131,6 +131,7 @@ export const updateStudent = async (id, student, dispatch) => {
 	}
 };
 
+
 //CREATE STUDENT
 export const addStudent = async (student, dispatch) => {
 	dispatch(addStudentStart());
