@@ -21,18 +21,18 @@ import NewStudent from "./pages/newStudent/NewStudent";
 import NoteList from "./pages/noteList/NoteList";
 import Note from "./pages/note/Note";
 import NewNote from "./pages/newNote/NewNote";
+import NotFound from "./pages/notfound/NotFound";
+import { useSelector } from "react-redux";
 
 function App() {
-	const admin = JSON.parse(
-		JSON.parse(localStorage.getItem("persist:root")).user
-	).currentUser;
+	const admin = useSelector((state) => state.user.currentUser);
 
 	return (
 		<Router>
 			<Switch>
 				<Route path="/login">{admin ? <Redirect to="/" /> : <Login />}</Route>
 
-				{admin && (
+				{admin ? (
 					<>
 						<Topbar />
 						<div className="container">
@@ -40,6 +40,7 @@ function App() {
 							<Route exact path="/">
 								<Home />
 							</Route>
+
 							<Route path="/users">
 								<UserList />
 							</Route>
@@ -78,6 +79,13 @@ function App() {
 								<NewNote />
 							</Route>
 						</div>
+					</>
+				) : (
+					<>
+						<Redirect to="/notfound" />
+						<Route path="/notfound">
+							<NotFound />
+						</Route>
 					</>
 				)}
 			</Switch>
